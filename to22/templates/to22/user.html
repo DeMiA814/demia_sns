@@ -1,0 +1,121 @@
+{% extends 'to22/layout.html' %}
+{% block active_user_pc %}active{% endblock %}
+{% block active_user_mb %}active{% endblock %}
+{% block content %}
+
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-profile">
+            <div class="card-avatar">
+              {% if user.icon.url != null %}
+                <img src="{{ user.icon.url }}" style="height: 100px; width: 100px;">
+              {% else %}
+                <img src="https://s3-ap-northeast-1.amazonaws.com/to22-media/media/to22/2.jpg" style="height: 100px; width: 100px;">
+              {% endif%}
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">{{ user.get_username }}</h4>
+            </div>
+            <div class="card-body">
+             <table class="user_table">
+                <tr>
+                  <td class="user_table_left">ユーザー名</td><td class="user_table_right">{{ user.username }}</td>
+                </tr>
+                {% if user.username != user.email %}
+                <tr>
+                  <td class="user_table_left">メールアドレス</td><td class="user_table_right">{{ user.email }}</td>
+                </tr>
+                {% endif %}
+             </table>
+             <table class="register_list" >
+               <tr>
+                 <td>登録言語</td>
+               {% for component in skill %}
+                 <td>{{ component.name }}</td>
+               {% endfor %}
+               </tr>
+             </table>
+             <table class="register_search">
+                <form action="{% url 'user' %}" method ="post">
+                    {% csrf_token %}
+                    <tr>
+                      <td style='width: 70%;'><input type='text' name="word" style='width: 100%;'></td>
+                      <td style='width: 30%;'><input type="submit" name="mode" value="検索" style='width: 100%;'></td>
+                    </tr>
+                </form>
+             </table>
+              <table class="register_list_add">
+               <form action="{% url 'user' %}" method ="post">
+                   {% csrf_token %}
+                   <tr>
+                    <th style='width: 20%;'><label for="{{ form.division_id.id_for_label }}">{{ form.division_id.label }}</label></th>
+                    <td style='width: 50%;'>{{ form.division_id }}{{ form.division_id.errors }}</td>
+                    <td style='width: 30%;'><input type="submit" name="mode" value="add" style='width: 100%;'></td>
+                  </tr>
+               </form>
+             </table>
+             <table class="register_list_delete">
+               <form action="{% url 'user' %}" method ="post">
+                   {% csrf_token %}
+                   <tr>
+                    <th style='width: 20%;'><label for="{{ delete_menu.division_id.id_for_label }}">{{ delete_menu.division_id.label }}</label></th>
+                    <td style='width: 50%;'>{{ delete_menu.division_id }}{{ delete_menu.division_id.errors }}</td>
+                    <td style='width: 30%;'><input type="submit" name="mode" value="delete" style='width: 100%;'></td>
+                  </tr>
+               </form>
+             </table>
+            </div>
+          </div>
+        </div>
+      </div>
+  {% for post in user_post_info %}
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-header card-header-danger card-header-icon">
+        <p class="card-category">
+          {% if post.user_id.icon.url != null %}
+            <img src="{{ post.user_id.icon.url }}" style="height: 50px; width: 50px;">
+          {% else %}
+            <img src="https://s3-ap-northeast-1.amazonaws.com/to22-media/media/to22/2.jpg" style="height: 50px; width: 50px;">
+          {% endif%}
+          {{ post.user_id }}
+        </p>
+        <div class="card-icon">
+          {% if post.item_id.picture != null %}
+            <img src="{{ post.item_id.picture }}" style="max-height: 50px; max-width: 50px;">
+          {% else %}
+            <img src="https://s3-ap-northeast-1.amazonaws.com/to22-media/media/to22/noimage.png" style="max-height: 50px; max-width: 50px;">
+          {% endif%}
+        </div>
+        {% if post.item_id.name != null %}
+          <h3 class="card-title">{{ post.item_id.name }}</h3>
+        {% else %}
+          <h3 class="no_item">削除された教材</h3>
+        {% endif%}
+        <h2 class="card-content">{{ post.time }}分</h2>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+         <p>{{ post.memo }}</p>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <div style="width: 60%;"><i class="material-icons">local_offer</i> {{ post.division_id.name }}</div>
+          <div style="width: 40%; text-align: right;">{{ post.date }}</div>
+        </div>
+      </div>
+      <table>
+        <tr>
+          <td class="timeline_box_td_left"><a href="{% url 'edit' post.id %}">編集</a></td>
+          <td class="timeline_box_td_right"><a href="{% url 'delete' post.id %}">削除</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</div>
+{% endblock %}

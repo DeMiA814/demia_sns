@@ -1,0 +1,93 @@
+{% extends 'to22/layout.html' %}
+{% block active_submit %}active{% endblock %}
+
+{% block content %}
+
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <table>
+        <form action="{% url 'submit' %}" method ="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <table class="table" style="margin: 20px;">
+                <tbody>
+                    <tr>
+                        <th><label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label></th>
+                        <td>{{ form.name }}{{ form.name.errors }}</td>
+                    </tr>
+                    <tr>
+                        <th><label for="{{ form.URL.id_for_label }}">{{ form.URL.label }}</label></th>
+                        <td>{{ form.URL }} {{ form.URL.errors }}</td>
+                    </tr>
+                    <tr>
+                        <th><label for="{{ form.division_id.id_for_label }}">{{ form.division_id.label }}</label></th>
+                        <td>{{ form.division_id }} {{ form.division_id.errors }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <input class="submit-btn" type="submit" value="教材を追加" \
+                    name="add_btn" style="margin-left: 50%;transform: translateX(-50%);margin-bottom: 20px;">
+        </form>
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">登録教材一覧</h4>
+              <p class="card-category"> あなたの相棒の名が並びます</p>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class=" text-primary">
+                    <th>教材名</th>
+                    <th>言語</th>
+                    <th></th>
+                    <th></th>
+                    <th>画像URL</th>
+                  </thead>
+                  <tbody>
+                    <tr class="item_table"><th colspan="3">使用中の教材</th></tr>
+                    {% for item in active_items %}
+                    <tr>
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.division_id.name }}</td>
+                      <form action="{% url 'submit' %}" method ="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="item" value="{{ item.id }}">
+                          <th><input class="item_delete-btn" type="submit" value="削除"\
+                                        name="delete_btn"></th>
+                          <th><input class="submit-btn" type="submit" value="終わった教材に追加"\
+                                        name="change_state_btn"></th>
+                      </form>
+                      <td>{{ item.URL }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="item_table"><th colspan="3">終わった教材</th></tr>
+                    {% for item in not_active_items %}
+                    <tr>
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.division_id.name }}</td>
+                      <form action="{% url 'submit' %}" method ="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="item" value="{{ item.id }}">
+                          <th><input class="item_delete-btn" type="submit" value="削除"\
+                                        name="delete_btn"></th>
+                          <th><input class="submit-btn" type="submit" value="使用中の教材に追加"\
+                                        name="change_state_btn"></th>
+                        </form>
+                      <td>{{ item.URL }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

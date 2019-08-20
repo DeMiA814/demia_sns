@@ -1,0 +1,41 @@
+{% extends 'to22/layout.html' %}
+
+
+{% block content %}
+<style>
+    @media screen and (min-width:990px){
+    .content{width: 65%;
+            float: right;
+            margin-right: 50px;}
+    }
+    .delete_form{
+        overflow: hidden;
+        position: relative;
+        height: 100px;
+    }
+</style>
+<div class="content">
+<p class="index_subtitle">本当に削除しますか？</p>
+<form action="{% url 'delete' id %}" method="post" style="position:relative;" class="delete_form">
+    <table class="table">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+      <tbody>
+          {% for field in form %}
+          <tr>
+              <th><label for="{{ field.id_for_label }}">{{ field.label }}</label></th>
+              <td>{{ field }}{{ field.errors }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    <input type="submit" class="btn btn-primary pull-right" \
+           style="font-size: 20px;position: absolute;left: 50%;transform: translateX(-50%);" value="投稿を削除">
+</form>
+    <div class="cansel">
+        <a href='{% url 'user' %}' class="btn btn-primary pull-right">キャンセル</a>
+    </div>
+    </div>
+{% endblock %}
+
+{% block footer %}フッター(Report){% endblock %}

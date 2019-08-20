@@ -1,0 +1,268 @@
+{% extends 'to22/layout.html' %}
+{% block active_report %}active{% endblock %}
+
+{% block content %}
+
+  <div class="content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">学習の記録</h4>
+          <p class="card-category">
+            あなたの努力はここに刻まれる
+          </p>
+        </div>
+        <div class="card-body">
+          <div id="typography">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="report_card card card-chart">
+                  <div class="card-header card-header-success">
+                    <canvas id="myChart"></canvas>
+                  </div>
+                  <div class="card-body">
+                    <h4 class="card-title">言語別学習時間</h4>
+                    <p class="card-category">単位は分です</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="report_card card card-chart">
+                  <div class="card-header card-header-success">
+                    <div class="chart-container" style="position: relative; width:60vw; height:50vh">
+                      <canvas id="yourChart"></canvas>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <h4 class="card-title">言語別学習時間内訳</h4>
+                    <p class="card-category">割合が表示されます</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var items = JSON.parse("{{ division_list|escapejs }}");
+  var ctx = document.getElementById("yourChart").getContext('2d');
+  console.log(items);
+  new Chart(ctx, {
+          type: 'pie',
+          data: {
+            　labels: items,
+              datasets: [{
+                  label: '言語別学習時間内訳',
+                  data: {{ time_list }},
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)',
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)',
+                  ],
+                  borderColor: [
+                      'rgba(255,99,132,1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)',
+                      'rgba(255,99,132,1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)',
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+                maintainAspectRatio: false,
+                chartPadding: {
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0
+             },
+                 legend: {                          //凡例設定
+                  display: true,
+                  fontSize: 10,
+             },
+          　　　　title: {                           //タイトル設定
+                  display: false,                 //表示設定
+                  fontSize: 15,                  //フォントサイズ
+                  text: '言語別学習時間内訳'                //ラベル
+              },
+
+
+          }
+      });
+
+if({{time_sum}} <= 1000){
+   var chartChart = document.getElementById("myChart").getContext('2d');
+   new Chart(chartChart, {
+          type: 'bar',
+          data: {
+              labels: items,
+              datasets: [{
+                  label: '言語別学習時間表',
+                  data: {{ time_list }},
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)',
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)',
+                  ],
+                  borderColor: [
+                      'rgba(255,99,132,1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)',
+                      'rgba(255,99,132,1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)',
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+          　　legend: {                          //凡例設定
+                  display: false,
+                  defaultFontSize: 15,
+             },
+          　　　　title: {                           //タイトル設定
+                  display: false,                 //表示設定
+                  fontSize: 15,                  //フォントサイズ
+                  text: '言語別学習時間比較表'                //ラベル
+              },
+              scales: {
+              　　xAxes: [{                         //x軸設定
+                      display: true,                //表示設定
+                      scaleLabel: {                 //軸ラベル設定
+                         display: true,
+                         fontSize: 15              //フォントサイズ
+                      },
+                      ticks: {
+                          fontSize: 15             //フォントサイズ
+                      },
+                  }],
+                  yAxes: [{
+                      scaleLabel: {                 //軸ラベル設定
+                         display: true,
+                         labelString: 'minute',            //表示設定
+                         fontSize: 15              //フォントサイズ
+                      },
+                      ticks: {
+                          fontSize: 15,
+                          beginAtZero:true
+                      }
+                  }]
+              }
+          }
+      });
+}
+
+else {
+  var chartChart = document.getElementById("myChart").getContext('2d');
+  new Chart(chartChart, {
+         type: 'bar',
+         data: {
+             labels: items,
+             datasets: [{
+                 label: '言語別学習時間表',
+                 data: {{ time_hour_list }},
+                 backgroundColor: [
+                     'rgba(255, 99, 132, 0.2)',
+                     'rgba(54, 162, 235, 0.2)',
+                     'rgba(255, 206, 86, 0.2)',
+                     'rgba(75, 192, 192, 0.2)',
+                     'rgba(153, 102, 255, 0.2)',
+                     'rgba(255, 159, 64, 0.2)',
+                     'rgba(255, 99, 132, 0.2)',
+                     'rgba(54, 162, 235, 0.2)',
+                     'rgba(255, 206, 86, 0.2)',
+                     'rgba(75, 192, 192, 0.2)',
+                     'rgba(153, 102, 255, 0.2)',
+                     'rgba(255, 159, 64, 0.2)',
+                 ],
+                 borderColor: [
+                     'rgba(255,99,132,1)',
+                     'rgba(54, 162, 235, 1)',
+                     'rgba(255, 206, 86, 1)',
+                     'rgba(75, 192, 192, 1)',
+                     'rgba(153, 102, 255, 1)',
+                     'rgba(255, 159, 64, 1)',
+                     'rgba(255,99,132,1)',
+                     'rgba(54, 162, 235, 1)',
+                     'rgba(255, 206, 86, 1)',
+                     'rgba(75, 192, 192, 1)',
+                     'rgba(153, 102, 255, 1)',
+                     'rgba(255, 159, 64, 1)',
+                 ],
+                 borderWidth: 1
+             }]
+         },
+         options: {
+         　　legend: {                          //凡例設定
+                 display: false,
+                 defaultFontSize: 15,
+            },
+         　　　　title: {                           //タイトル設定
+                 display: false,                 //表示設定
+                 fontSize: 15,                  //フォントサイズ
+                 text: '言語別学習時間比較表'                //ラベル
+             },
+             scales: {
+             　　xAxes: [{                         //x軸設定
+                     display: true,                //表示設定
+                     scaleLabel: {                 //軸ラベル設定
+                        display: true,
+                        fontSize: 15              //フォントサイズ
+                     },
+                     ticks: {
+                         fontSize: 15             //フォントサイズ
+                     },
+                 }],
+                 yAxes: [{
+                     scaleLabel: {                 //軸ラベル設定
+                        display: true,
+                        labelString: 'hour',            //表示設定
+                        fontSize: 15              //フォントサイズ
+                     },
+                     ticks: {
+                         fontSize: 15,
+                         beginAtZero:true
+                     }
+                 }]
+             }
+         }
+     });
+}
+
+  </script>
+
+{% endblock %}

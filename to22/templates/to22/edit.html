@@ -1,0 +1,49 @@
+{% extends 'to22/layout.html' %}
+
+{% block content %}
+<style>
+    .btn-circle-3d{display:none;}
+    .edit_btn{
+        font-size: 20px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    @media screen and (min-width:990px){
+    .content{width: 65%;
+            float: right;
+            margin-right: 50px;}
+    }
+</style>
+<div class="content">
+<form action="{% url 'edit' id %}" method="post" style="overflow: hidden;position: relative;height: 260px;">
+    <table class="table">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+      <table class="table">
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+            <tbody>
+                <tr>
+                  <th><label for="{{ form.item_id.id_for_label }}">{{ form.item_id.label }}</label></th>
+                  <td>{{ form.item_id }}{{ form.item_id.errors }}</td>
+                </tr>
+                <tr>
+                  <th><label for="{{ form.time.id_for_label }}">{{ form.time.label }}</label></th>
+                  <td>{{ form.time }}{{ form.time.errors }}</td>
+                </tr>   
+                <tr>
+                  <th><label for="{{ form.memo.id_for_label }}">{{ form.memo.label }}</label></th>
+                  <td>{{ form.memo }}{{ form.memo.errors }}</td>
+                </tr>
+            </tbody>
+          </table>
+    <input type="submit" class="btn btn-primary pull-right edit_btn" style="font-size: 20px;" value="投稿">
+</form>
+    <div class="cansel edit_cansel">
+        <a href='{% url 'user' %}' class="btn btn-primary pull-right">キャンセル</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}フッター(Report){% endblock %}

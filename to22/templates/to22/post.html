@@ -1,0 +1,55 @@
+{% extends 'to22/layout.html' %}
+{% block active_post %}active{% endblock %}
+
+{% block title %}Post{% endblock %}
+{% block page-title %}Post{% endblock %}
+
+{% block content %}
+<style>.btn-circle-3d{display: none;}</style>
+<div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">投稿</h4>
+                  <p class="card-category">あなたの頑張りをアピールしましょう</p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="report_form_table">
+                          <form action="{% url 'post' %}" method="post">
+                              <table class="table">
+                              {% csrf_token %}
+                              {{ form.non_field_errors }}
+                                <tbody>
+                                    <tr>
+                                      <th><label for="{{ form.item_id.id_for_label }}">{{ form.item_id.label }}</label></th>
+                                      <td>{{ form.item_id }}{{ form.item_id.errors }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th><label for="{{ form.time.id_for_label }}">{{ form.time.label }}</label></th>
+                                      <td>{{ form.time }}{{ form.time.errors }}</td>
+                                    </tr>   
+                                    <tr>
+                                      <th><label for="{{ form.memo.id_for_label }}">{{ form.memo.label }}</label></th>
+                                      <td>{{ form.memo }}{{ form.memo.errors }}</td>
+                                    </tr>
+                                </tbody>
+                              </table>
+                              <input type="submit" name='post_btn' class="btn btn-primary pull-right" style="font-size: 20px;" value="投稿">
+                          </form>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}
+
+{% block footer %}フッター(Post){% endblock %}

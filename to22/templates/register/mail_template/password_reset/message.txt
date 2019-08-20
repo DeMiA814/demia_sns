@@ -1,0 +1,7 @@
+{{ user.username }} にゃん
+
+下のURLをおしたら、パスワードを設定できるにゃ！
+
+{{ protocol}}://{{ domain }}{% url 'password_reset_confirm' uid token %}
+
+でみあ猫

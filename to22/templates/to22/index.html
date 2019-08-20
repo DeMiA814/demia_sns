@@ -1,0 +1,112 @@
+{% extends 'to22/layout.html' %}
+{% block active_index %}active{% endblock %}
+
+{% block content %}
+      <div class="content">
+        <div class="container-fluid">
+        {% if user.is_authenticated %}
+          <p class="index_subtitle">学習している言語の投稿を見ることができます</p>
+          <div class="row">
+            {% if division_flag == False %}
+              <p style="margin: 0px 20px;">ユーザーページから言語を登録してください</p>
+            {% else %}
+            <div style="width:100%">
+                  <p find_msg class="index_subtitle" style="width: 92%;margin: 0px 4%;">{{message|safe}}</p>
+                  <form action="{% url 'index' %}" method="post" style="margin: 16px;">
+                    {% csrf_token %}
+                   {{form}}
+                    <input type="submit" value="検索">
+                  </form>
+            </div>
+            {% for post in post_info %}
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <p class="card-category">
+                      {% if post.user_id.icon.url != null %}
+                        <img src="{{ post.user_id.icon.url }}" style="height: 50px; width: 50px;">
+                      {% else %}
+                        <img src="https://s3-ap-northeast-1.amazonaws.com/to22-media/media/to22/2.jpg" style="height: 50px; width: 50px;">
+                      {% endif%}
+                      {{ post.user_id }}
+                  </p>
+                  <div class="card-icon">
+                    {% if post.item_id.URL %}
+                      <img src="{{ post.item_id.URL }}" style="max-height: 50px; max-width: 50px;">
+                    {% else %}
+                      <img src="https://s3-ap-northeast-1.amazonaws.com/to22-media/media/to22/noimage.png" style="max-height: 50px; max-width: 50px;">
+                    {% endif%}
+                  </div>
+                 {% if post.item_id.name != null %}
+                      <h3 class="card-title">{{ post.item_id.name }}</h3>
+                 {% else %}
+                      <h3 class="no_item">削除された教材</h3>
+                 {% endif%}
+                  <h2 class="card-content">{{ post.time }}分</h2>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                   <p>{{ post.memo }}</p>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    <div style="width: 60%;"><i class="material-icons">local_offer</i> {{ post.division_id.name }}</div>
+                    <div style="width: 40%; text-align: right;">{{ post.date }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        {% else %}
+        <p class="index_subtitle">学習している言語の投稿を見ることができます</p>
+        <div class="row">
+          {% for post in post_info %}
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <p class="card-category">
+                      {% if post.user_id.icon.url %}
+                        <img src="{{ post.user_id.icon.url }}" style="height: 50px; width: 50px;">
+                      {% else %}
+                        <img src="https://s3-ap-northeast-1.amazonaws.com/to22-media/media/to22/2.jpg" style="height: 50px; width: 50px;">
+                      {% endif%}
+                      {{ post.user_id }}
+                  </p>
+                  <div class="card-icon">
+                    {% if post.item_id.URL %}
+                      <img src="{{ post.item_id.URL }}" style="max-height: 50px; max-width: 50px;">
+                    {% else %}
+                      <img src="https://s3-ap-northeast-1.amazonaws.com/to22-media/media/to22/noimage.png" style="max-height: 50px; max-width: 50px;">
+                    {% endif%}
+                  </div>
+                  {% if post.item_id.name != null %}
+                      <h3 class="card-title">{{ post.item_id.name }}</h3>
+                  {% else %}
+                      <h3 class="no_item">削除された教材</h3>
+                  {% endif%}
+                  <h2 class="card-content">{{ post.time }}分</h2>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                   <p>{{ post.memo }}</p>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    <div style="width: 60%;"><i class="material-icons">local_offer</i> {{ post.division_id.name }}</div>
+                    <div style="width: 40%; text-align: right;">{{ post.date }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+
+{% endblock %}

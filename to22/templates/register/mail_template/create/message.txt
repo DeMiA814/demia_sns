@@ -1,0 +1,8 @@
+{{ user.username }}にゃん 、会員登録どうもありがとうにゃ！
+
+下のURLよりサイトを押したら、会員登録完了だにゃ！
+それまでは会員ではないので注意にゃ！
+
+{{ protocol}}://{{ domain }}{% url 'user_create_complete' token %}
+
+でみあ猫
